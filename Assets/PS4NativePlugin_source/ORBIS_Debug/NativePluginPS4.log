@@ -1,0 +1,13 @@
+﻿Build started 2016/06/23 14:54:00.
+     1>Project "F:\develop\my_project\PS4PluginTest\Assets\PS4NativePlugin_source\NativePluginPS4.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         prx.cpp
+         orbis-clang.exe -o ORBIS_Debug\prx.o -c -MD -MV -fdiagnostics-format=msvc -I"C:\Program Files (x86)\SCE\ORBIS SDKs\3.500\host_tools\lib\clang\include" -I"C:\Program Files (x86)\SCE\ORBIS SDKs\3.500\target\include" -I"C:\Program Files (x86)\SCE\ORBIS SDKs\3.500\target\include_common" -D_DEBUG -g -Wall -fno-caret-diagnostics -O0 F:\develop\my_project\PS4PluginTest\Assets\PS4NativePlugin_source\prx.cpp
+       Link:
+         C:\Program Files (x86)\SCE\ORBIS SDKs\3.500\host_tools\bin\orbis-ld.exe -o "F:\develop\my_project\PS4PluginTest\Assets\PS4NativePlugin_source\..\Plugins\PS4\NativePluginPS4.prx" --oformat=prx --prx-stub-output-dir="F:\develop\my_project\PS4PluginTest\Assets\PS4NativePlugin_source\..\Plugins\PS4" -L"C:\Program Files (x86)\SCE\ORBIS SDKs\3.500\target\lib" --start-group ORBIS_Debug\prx.o libScePerf_stub_weak.a --end-group
+         NativePluginPS4.vcxproj -> F:\develop\my_project\PS4PluginTest\Assets\PS4NativePlugin_source\..\Plugins\PS4\NativePluginPS4.prx
+     1>Done Building Project "F:\develop\my_project\PS4PluginTest\Assets\PS4NativePlugin_source\NativePluginPS4.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00.16

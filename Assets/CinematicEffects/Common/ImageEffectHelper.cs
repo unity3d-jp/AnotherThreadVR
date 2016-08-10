@@ -1,4 +1,7 @@
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace UnityStandardAssets.CinematicEffects
 {
@@ -6,29 +9,38 @@ namespace UnityStandardAssets.CinematicEffects
     {
         public static bool IsSupported(Shader s, bool needDepth, bool needHdr, MonoBehaviour effect)
         {
-            if (s == null || !s.isSupported)
+#if UNITY_EDITOR
+            // Don't check for shader compatibility while it's building as it would disable most effects
+            // on build farms without good-enough gaming hardware.
+            if (!BuildPipeline.isBuildingPlayer)
             {
-                Debug.LogWarningFormat("Missing shader for image effect {0}", effect);
-                return false;
-            }
+#endif
+                if (s == null || !s.isSupported)
+                {
+                    Debug.LogWarningFormat("Missing shader for image effect {0}", effect);
+                    return false;
+                }
 
-            if (!SystemInfo.supportsImageEffects || !SystemInfo.supportsRenderTextures)
-            {
-                Debug.LogWarningFormat("Image effects aren't supported on this device ({0})", effect);
-                return false;
-            }
+                if (!SystemInfo.supportsImageEffects || !SystemInfo.supportsRenderTextures)
+                {
+                    Debug.LogWarningFormat("Image effects aren't supported on this device ({0})", effect);
+                    return false;
+                }
 
-            if (needDepth && !SystemInfo.SupportsRenderTextureFormat(RenderTextureFormat.Depth))
-            {
-                Debug.LogWarningFormat("Depth textures aren't supported on this device ({0})", effect);
-                return false;
-            }
+                if (needDepth && !SystemInfo.SupportsRenderTextureFormat(RenderTextureFormat.Depth))
+                {
+                    Debug.LogWarningFormat("Depth textures aren't supported on this device ({0})", effect);
+                    return false;
+                }
 
-            if (needHdr && !SystemInfo.SupportsRenderTextureFormat(RenderTextureFormat.ARGBHalf))
-            {
-                Debug.LogWarningFormat("Floating point textures aren't supported on this device ({0})", effect);
-                return false;
+                if (needHdr && !SystemInfo.SupportsRenderTextureFormat(RenderTextureFormat.ARGBHalf))
+                {
+                    Debug.LogWarningFormat("Floating point textures aren't supported on this device ({0})", effect);
+                    return false;
+                }
+#if UNITY_EDITOR
             }
+#endif
 
             return true;
         }

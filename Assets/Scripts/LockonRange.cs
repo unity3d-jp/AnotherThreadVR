@@ -23,35 +23,35 @@ public class LockonRange
 	public void init(Material material)
 	{
 		const int VERTS = 8;
-		var vertices = new Vector3[VERTS*6];
-		var colors = new Color[VERTS*6];
+		var vertices = new Vector3[VERTS*4];
+		var colors = new Color[VERTS*4];
 		float x0 = Mathf.Cos((float)-1/(float)VERTS * Mathf.PI*2f);
 		float y0 = Mathf.Sin((float)-1/(float)VERTS * Mathf.PI*2f);
-		const float ZF = 0f;
+		const float ZF = 2f;
 		const float ZB = 200f;
-		const float RADF = 0f;
+		const float RADF = 0.125f;
 		const float RADB = 12.5f;
 		for (var i = 0; i < VERTS; ++i) {
 			float x1 = Mathf.Cos(((float)(i)/(float)VERTS) * Mathf.PI*2f);
 			float y1 = Mathf.Sin(((float)(i)/(float)VERTS) * Mathf.PI*2f);
-			vertices[i*6+0] = new Vector3(x0*RADF, y0*RADF, ZF);
-			vertices[i*6+1] = new Vector3(x1*RADF, y1*RADF, ZF);
-			vertices[i*6+2] = new Vector3(x1*RADB, y1*RADB, ZB);
-			vertices[i*6+3] = new Vector3(x0*RADB, y0*RADB, ZB);
-			vertices[i*6+4] = new Vector3(x0*RADB, y0*RADB, ZB);
-			vertices[i*6+5] = new Vector3(x1*RADF, y1*RADF, ZF);
+			vertices[i*4+0] = new Vector3(x0*RADF, y0*RADF, ZF);
+			vertices[i*4+1] = new Vector3(x0*RADB, y0*RADB, ZB);
+			vertices[i*4+2] = new Vector3(x0*RADB, y0*RADB, ZB);
+			vertices[i*4+3] = new Vector3(x1*RADB, y1*RADB, ZB);
+			// vertices[i*6+4] = new Vector3(x0*RADB, y0*RADB, ZB);
+			// vertices[i*6+5] = new Vector3(x1*RADF, y1*RADF, ZF);
 			x0 = x1;
 			y0 = y1;
 
-			colors[i*6+0] = new Color(0.1f, 1f, 0.2f, 0.25f);
-			colors[i*6+1] = new Color(0.1f, 1f, 0.2f, 0.25f);
-			colors[i*6+2] = new Color(0.1f, 1f, 0.2f, 0.5f);
-			colors[i*6+3] = new Color(0.1f, 1f, 0.2f, 0.5f);
-			colors[i*6+4] = new Color(0.1f, 1f, 0.2f, 0f);
-			colors[i*6+5] = new Color(0.1f, 1f, 0.2f, 0f);
+			colors[i*4+0] = new Color(0.1f, 1f, 0.2f, 0.05f);
+			colors[i*4+1] = new Color(0.1f, 1f, 0.2f, 0.5f);
+			colors[i*4+2] = new Color(0.1f, 1f, 0.2f, 0.5f);
+			colors[i*4+3] = new Color(0.1f, 1f, 0.2f, 0.5f);
+			// colors[i*6+4] = new Color(0.1f, 1f, 0.2f, 0.5f);
+			// colors[i*6+5] = new Color(0.1f, 1f, 0.2f, 0.5f);
 		}
-		var indices = new int[VERTS*6];
-		for (var i = 0; i < VERTS*6; ++i) {
+		var indices = new int[VERTS*4];
+		for (var i = 0; i < VERTS*4; ++i) {
 			indices[i] = i;
 		}
 

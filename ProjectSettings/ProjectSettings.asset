@@ -98,7 +98,7 @@ PlayerSettings:
   preloadedAssets: []
   metroEnableIndependentInputSource: 0
   xboxOneDisableKinectGpuReservation: 0
-  singlePassStereoRendering: 0
+  singlePassStereoRendering: 1
   protectGraphicsMemory: 0
   AndroidBundleVersionCode: 1
   AndroidMinSdkVersion: 9
@@ -252,7 +252,7 @@ PlayerSettings:
   ps4AppVersion: 01.00
   ps4AppType: 0
   ps4ParamSfxPath: 
-  ps4VideoOutPixelFormat: 1
+  ps4VideoOutPixelFormat: 0
   ps4VideoOutResolution: 6
   ps4PronunciationXMLPath: 
   ps4PronunciationSIGPath: 

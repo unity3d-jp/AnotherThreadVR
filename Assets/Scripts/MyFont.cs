@@ -122,13 +122,35 @@ public class MyFont {
 		put_string(front, put_string_work_, scale, x, y, type);
 	}
 
+	public void putNumber(int front, int num, int keta, float scale, float x, float y, Type type, int decimal_point)
+	{
+		int d = num;
+		if (decimal_point > 0) {
+			++keta;
+		}
+		put_string_work_[keta] = '\0';
+		for (var i = 0; i < keta; ++i) {
+			if (i == decimal_point) {
+				put_string_work_[keta - i - 1] = (char)((int)'.');
+			} else {
+				long v = d % 10;
+				d /= 10;
+				put_string_work_[keta - i - 1] = (char)((int)'0' + (char)v);
+			}
+		}
+		put_string(front, put_string_work_, scale, x, y, type);
+	}
+
 	public float putChar(int front, char ch, float scale, float cx, float y, Type type, bool touhaba)
 	{
 		CharacterInfo info = info_[(int)ch-CHAR_START];
 		int idx = index_*4;
 		int cy = (int)y + info.minY;
-		int w = (int)((float)(touhaba ? info8_.glyphWidth : info.glyphWidth) * scale);
-		int h = (int)((float)(touhaba ? (float)info8_.glyphHeight : info.glyphHeight) * scale);
+		// int w = (int)((float)(touhaba ? info8_.glyphWidth : info.glyphWidth) * scale);
+		// int h = (int)((float)(touhaba ? (float)info8_.glyphHeight : info.glyphHeight) * scale);
+		float w8 = (float)(info8_.glyphWidth) * scale;
+		float w = (float)(info.glyphWidth) * scale;
+		float h = (float)(info.glyphHeight) * scale;
 		vertices_[front][idx+0] = new Vector3(cx,     cy, (float)type);
 		vertices_[front][idx+1] = new Vector3(cx+w,   cy, (float)type);
 		vertices_[front][idx+2] = new Vector3(cx,   cy+h, (float)type);
@@ -138,7 +160,10 @@ public class MyFont {
 		uvs_[front][idx+2] = info.uvTopLeft;
 		uvs_[front][idx+3] = info.uvTopRight;
 		++index_;
-		return cx + w;
+		float okuri = w;
+		if (touhaba)
+			okuri = w8;
+		return cx + okuri;
 	}
 
 	private void put_string(int front, char[] str, float scale, float x, float y, Type type)
@@ -152,7 +177,7 @@ public class MyFont {
 			if (str[i] == '\0') {
 				break;
 			}
-			cx = putChar(front, str[i], scale, cx, y, type, true /* touhaba */);
+			cx = putChar(front, str[i], scale, cx, y, type, '0' <= str[i] && str[i] <= '9' /* touhaba */);
 		}
 	}
 

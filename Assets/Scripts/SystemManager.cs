@@ -381,10 +381,22 @@ public class SystemManager : MonoBehaviour {
 	{
 		// debug info
 		if (InputManager.Instance.getButton(InputManager.Button.Debug) > 0) {
-			Options.Instance.PerformanceMeter = !Options.Instance.PerformanceMeter;
+			if (Options.Instance.PerformanceMeter) {
+				Options.Instance.PerformanceMeter = false;
+			} else {
+				if (pause_) {
+					Options.Instance.PerformanceMeter = true;
+				}
+			}
 		}
 
-		if (Options.Instance.PerformanceMeter) {
+		if (!Options.Instance.PerformanceMeter) {
+		    {
+				MyFont.Instance.putNumber(updating_front, (int)(1f/(elapsed_frame_time_display_)*100f), 5 /* keta */, 2f /* scale */,
+										  -440f, 192f, MyFont.Type.Green, 2 /* decimal_point */);
+				MyFont.Instance.putString(updating_front, "FPS", 1f /* scale */, -200f, 192f, MyFont.Type.Green);
+			}
+		} else {
 		    {
 				MyFont.Instance.putNumber(updating_front, (int)update_frame_, 8 /* keta */, 1f /* scale */,
 										  -440f, 256f, MyFont.Type.Green);

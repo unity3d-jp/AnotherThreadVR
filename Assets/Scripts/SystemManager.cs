@@ -538,8 +538,6 @@ public class SystemManager : MonoBehaviour {
 				if (player_.isNowLocking()) {
 					locked = LockTarget.checkAll(player_, update_time_);
 				}
-				// HUD
-				HUD.Instance.update(dt_, update_time_);
 				// collision
 				MyCollider.calculate();
 				
@@ -594,7 +592,6 @@ public class SystemManager : MonoBehaviour {
 		my_camera_.renderUpdate(updating_front, ref draw_buffer_[updating_front]);
 		player_.renderUpdate(updating_front, ref draw_buffer_[updating_front]);
 		TaskManager.Instance.renderUpdate(updating_front, my_camera_, ref draw_buffer_[updating_front]);
-		HUD.Instance.renderUpdate(updating_front);
 
 		// debug info
 		renderUpdate_debug_info(updating_front);

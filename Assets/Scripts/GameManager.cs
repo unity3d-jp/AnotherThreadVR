@@ -49,6 +49,7 @@ public class GameManager
 		SystemManager.Instance.registBgm(DrawBuffer.BGM.Stop);
 		SystemManager.Instance.registMotion(DrawBuffer.Motion.Play);
 		SystemManager.Instance.setFlowSpeed(0f);
+		SystemManager.Instance.setSubjective(true);
 
 		for (var w = new Utility.WaitForSeconds(5f, update_time_); !w.end(update_time_);) {yield return null; }
 		Notice notice;
@@ -68,6 +69,7 @@ public class GameManager
 				game_phase_ = GamePhase.Game;
 				SystemManager.Instance.registSound(DrawBuffer.SE.Missile);
 				SystemManager.Instance.registMotion(DrawBuffer.Motion.GoodLuck);
+				SystemManager.Instance.setSubjective(false);
 				replay_manager_.startPlaying(update_time_, Player.Instance);
 			}
 			yield return null;

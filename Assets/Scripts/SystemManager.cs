@@ -874,6 +874,11 @@ public class SystemManager : MonoBehaviour {
 		view_offset_z_ = -camera_.transform.localPosition.z;
 	}
 
+	public void setSubjective(bool flg)
+	{
+		subjective_ = flg;
+	}
+
 	private void camera_update()
 	{
 		// camera view for VR

@@ -17,20 +17,26 @@ public class GameManager
 	private GamePhase game_phase_ = GamePhase.Title;
 	private IEnumerator enumerator_;
 	private double update_time_;
+	private ReplayManager replay_manager_;
 
 	public void init()
 	{
 		enumerator_ = act();	// この瞬間は実行されない
+		replay_manager_ = new ReplayManager();
+		replay_manager_.init();
 	}
 
 	public void update(float dt, double update_time)
 	{
 		update_time_ = update_time;
 		enumerator_.MoveNext();
+		replay_manager_.update(update_time, Player.Instance);
 	}
 
 	public void restart()
 	{
+		replay_manager_.stopRecording();
+		replay_manager_.stopPlaying(Player.Instance);
 		enumerator_ = null;
 		enumerator_ = act();
 	}
@@ -57,6 +63,12 @@ public class GameManager
 				game_phase_ = GamePhase.Game;
 				SystemManager.Instance.registSound(DrawBuffer.SE.Missile);
 				SystemManager.Instance.registMotion(DrawBuffer.Motion.GoodLuck);
+				replay_manager_.startRecording(update_time_);
+			} else if (replay_manager_.hasRecorded()) {
+				game_phase_ = GamePhase.Game;
+				SystemManager.Instance.registSound(DrawBuffer.SE.Missile);
+				SystemManager.Instance.registMotion(DrawBuffer.Motion.GoodLuck);
+				replay_manager_.startPlaying(update_time_, Player.Instance);
 			}
 			yield return null;
 		}

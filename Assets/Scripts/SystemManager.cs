@@ -364,10 +364,10 @@ public class SystemManager : MonoBehaviour {
 
 	public void restart()
 	{
+		GameManager.Instance.restart();
 		TaskManager.Instance.restart();
 		MyCollider.restart();
 		LockTarget.restart();
-		GameManager.Instance.restart();
 		TubeScroller.Instance.restart();
 		Beam.Instance.restart();
 		Trail.Instance.restart();

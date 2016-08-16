@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 namespace UTJ {
 
-// public class Player : Task
 public class Player
 {
 	private static Player instance_;
@@ -23,6 +22,9 @@ public class Player
 	private double can_fire_time_;
 	private bool now_locking_ = false;
 	private bool prev_fire_button_ = false;
+	private bool did_fire_bullet_ = false;
+	private bool did_fire_missile_ = false;
+	private ReplayManager replay_manager_ = null;
 
 	private int l_trail_;
 	private int r_trail_;
@@ -41,6 +43,13 @@ public class Player
 	public void setPhaseTitle() { phase_ = Phase.Title; }
 	public void setPhaseStart() { phase_ = Phase.Start; }
 	public void setPhaseBattle() { phase_ = Phase.Battle; }
+	public bool didFireBullet() { return did_fire_bullet_; }
+	public bool didFireMissile() { return did_fire_missile_; }
+
+	public void setReplay(ReplayManager replay_manager)
+	{
+		replay_manager_ = replay_manager;
+	}
 
 	public bool isNowLocking() { return now_locking_; }
 
@@ -64,6 +73,10 @@ public class Player
 									2f /* radius */);
 		fire_time_ = 0f;
 		can_fire_time_ = 0f;
+		now_locking_ = false;
+		prev_fire_button_ = false;
+		did_fire_bullet_ = false;
+		did_fire_missile_ = false;
 
 		float width = 0.3f;
 		var lpos = rigidbody_.transform_.transformPosition(ref l_trail_locator_);
@@ -96,7 +109,7 @@ public class Player
 		Trail.Instance.resetPosition(r_trail_, ref rpos);
 	}
 
-	public void update(float dt, double update_time, float flow_speed)
+	private void internal_update_for_playing(float dt, double update_time)
 	{
 		update_posture(dt);
 		switch (phase_) {
@@ -123,6 +136,25 @@ public class Player
 				rigidbody_.setDamper(16f);
 				update_battle(dt, update_time);
 				break;
+		}
+	}
+
+	private void internal_update_for_replay(float dt, double update_time)
+	{
+		MyTransform transform = new MyTransform();
+		bool success = replay_manager_.getFrameData(update_time, ref transform);
+		if (!success) {
+			SystemManager.Instance.restart();
+		}
+		rigidbody_.transform_ = transform;
+	}
+
+	public void update(float dt, double update_time, float flow_speed)
+	{
+		if (replay_manager_ == null) {
+			internal_update_for_playing(dt, update_time);
+		} else {
+			internal_update_for_replay(dt, update_time);
 		}
 		// trail
 	    {
@@ -169,6 +201,7 @@ public class Player
 		prev_fire_button_ = fire_button;
 
 		// fire bullets
+		did_fire_bullet_ = false;
 		if (fire_button) {
 			if (can_fire_time_ - update_time > 0f && update_time - fire_time_ > 0f) {
 				var lpos = rigidbody_.transform_.transformPosition(ref l_bullet_locator_);
@@ -178,6 +211,7 @@ public class Player
 				SystemManager.Instance.registSound(DrawBuffer.SE.Bullet);
 				fire_time_ = update_time + 0.08f;
 				arm_offset_ = 1f;
+				did_fire_bullet_ = true;
 			}
 		} else {
 			can_fire_time_ = update_time + 2f;
@@ -188,13 +222,14 @@ public class Player
 		now_locking_ = fire_button;
 
 		// fire missiles
+		did_fire_missile_ = false;
 		if (fire_button_released) {
 			bool fired = LockTarget.fireMissiles(this);
 			if (fired) {
 				SystemManager.Instance.registSound(DrawBuffer.SE.Missile);
+				did_fire_missile_ = true;
 			}
 		}
-
 	}
 
 	private void update_battle(float dt, double update_time)

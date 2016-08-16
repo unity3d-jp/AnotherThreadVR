@@ -90,47 +90,14 @@ public class TubeScroller : MonoBehaviour
 		TubeType.Type1,
 		TubeType.Type1,
 		TubeType.Type1,
-		// TubeType.Type1,
-		// TubeType.Type1,
-		// TubeType.Type1,
-		// TubeType.Type1,
-
-		// TubeType.Type1,
-		// TubeType.Type1,
-		// TubeType.Type1,
-		// TubeType.Type1,
-		// TubeType.Type1,
-		// TubeType.Type1,
-		// TubeType.Type1,
-		// TubeType.Type1,
-
-		// TubeType.Type1,
-		// TubeType.Type1,
-		// TubeType.Type1,
-		// TubeType.Type1,
-		// TubeType.Type1,
-		// TubeType.Type1,
-		// TubeType.Type1,
-		// TubeType.Type1,
-
-		// TubeType.Type1,
-		// TubeType.Type1,
-		// TubeType.Type1,
-		// TubeType.Type1,
-		// TubeType.Type1,
-		// TubeType.Type1,
-		// TubeType.Type1,
-		// TubeType.Type1,
 	};
 
 	public GameObject title_prefab_;
-	// public GameObject unitychan_prefab_;
 	public GameObject[] tube_prefabs_;
 	const float UNIT_LENGTH = 200f;
 	const float UNIT_CENTER_OFFSET = 100f;
 	const float REPEAT_LENGTH = UNIT_LENGTH * NUM;
 	const float MOST_BEHIND_Z = -500f;
-	// private GameObject unitychan_go_;
 	private Animator animator_ = null;
 	private GameObject[] tube_list_;
 	private Vector3[] original_position_list_;
@@ -161,9 +128,6 @@ public class TubeScroller : MonoBehaviour
 					var go = Instantiate(title_prefab_) as GameObject;
 					go.transform.SetParent(tube_list_[i].transform);
 				}
-				// unitychan_go_ = Instantiate(unitychan_prefab_) as GameObject;
-				// animator_ = unitychan_go_.GetComponent<Animator>();
-				// unitychan_go_.transform.SetParent(tube_list_[i].transform);
 			}
 			original_position_list_[i] = pos;
 			switch (pattern_tube) {

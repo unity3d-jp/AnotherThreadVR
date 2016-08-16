@@ -11,8 +11,7 @@ public class ReplayManager
 	{
 		public double game_time_;
 		public MyTransform player_transform_;
-		public bool fire_bullet_;
-		public bool fire_missile_;
+		public bool is_fire_button_pressed_;
 	}
 
 	private RecordedFrame[] frames_ = new RecordedFrame[MAX_FRAMES]; // 2.5MiB
@@ -79,8 +78,7 @@ public class ReplayManager
 
 	public void update(double update_time,
 					   ref MyTransform player_transform,
-					   bool fire_bullet,
-					   bool fire_missile)
+					   bool is_fire_button_pressed)
 	{
 		if (is_recording_) {
 			if (frame_index_ > 0 &&
@@ -91,10 +89,10 @@ public class ReplayManager
 			frames_[frame_index_].game_time_ = update_time - start_time_;
 			frames_[frame_index_].player_transform_.position_ = player_transform.position_;
 			frames_[frame_index_].player_transform_.rotation_ = player_transform.rotation_;
-			frames_[frame_index_].fire_bullet_ = fire_bullet;
-			frames_[frame_index_].fire_missile_ = fire_missile;
-			// Debug.LogFormat("record:{0},{1}", frames_[frame_index_].game_time_, frames_[frame_index_].player_
-							// transform_.position_);
+			frames_[frame_index_].is_fire_button_pressed_ = is_fire_button_pressed;
+			// Debug.LogFormat("record:{0},{1}",
+			// 				frames_[frame_index_].game_time_,
+			// 				frames_[frame_index_].player_transform_);
 			++frame_index_;
 			if (frame_index_ >= MAX_FRAMES) {
 				Debug.LogError("exceeded replay buffer");
@@ -108,8 +106,7 @@ public class ReplayManager
 		if (is_recording_) {
 			update(update_time,
 				   ref player.rigidbody_.transform_,
-				   player.didFireBullet(),
-				   player.didFireMissile());
+				   player.isFireButtonPressed());
 		}
 	}
 	
@@ -130,7 +127,7 @@ public class ReplayManager
 		}
 	}
 
-	public bool getFrameData(double update_time, ref MyTransform transform)
+	public bool getFrameData(double update_time, ref MyTransform transform, ref bool is_fire_button_pressed)
 	{
 		double game_time = update_time - start_time_;
 		int max = recorded_frame_number_;
@@ -154,6 +151,11 @@ public class ReplayManager
 		transform.rotation_ = Quaternion.Slerp(frames_[index_a].player_transform_.rotation_,
 											   frames_[index_b].player_transform_.rotation_,
 											   ratio);
+
+		bool is_fire_button_pressed_a = frames_[index_a].is_fire_button_pressed_;
+		bool is_fire_button_pressed_b = frames_[index_b].is_fire_button_pressed_;
+		is_fire_button_pressed = (is_fire_button_pressed_a ||
+								  is_fire_button_pressed_b);
 		// Debug.LogFormat("play:{0},{1}", game_time, transform.position_);
 		return (index +1 < max);
 	}

@@ -21,9 +21,8 @@ public class Player
 	private double fire_time_;
 	private double can_fire_time_;
 	private bool now_locking_ = false;
+	private bool fire_button_ = false;
 	private bool prev_fire_button_ = false;
-	private bool did_fire_bullet_ = false;
-	private bool did_fire_missile_ = false;
 	private ReplayManager replay_manager_ = null;
 
 	private int l_trail_;
@@ -43,8 +42,8 @@ public class Player
 	public void setPhaseTitle() { phase_ = Phase.Title; }
 	public void setPhaseStart() { phase_ = Phase.Start; }
 	public void setPhaseBattle() { phase_ = Phase.Battle; }
-	public bool didFireBullet() { return did_fire_bullet_; }
-	public bool didFireMissile() { return did_fire_missile_; }
+
+	public bool isFireButtonPressed() { return fire_button_; }
 
 	public void setReplay(ReplayManager replay_manager)
 	{
@@ -74,9 +73,8 @@ public class Player
 		fire_time_ = 0f;
 		can_fire_time_ = 0f;
 		now_locking_ = false;
+		fire_button_ = false;
 		prev_fire_button_ = false;
-		did_fire_bullet_ = false;
-		did_fire_missile_ = false;
 
 		float width = 0.3f;
 		var lpos = rigidbody_.transform_.transformPosition(ref l_trail_locator_);
@@ -124,7 +122,7 @@ public class Player
 				break;
 
 			case Phase.Start:
-				update_attack(update_time);
+				update_attack(update_time, false /* replay */);
 				rigidbody_.setDamper(2f);
 				rigidbody_.addForceY(10f);
 				rigidbody_.addSpringForceX(0f, 4f);
@@ -132,9 +130,10 @@ public class Player
 				break;
 
 			case Phase.Battle:
-				update_attack(update_time);
+				update_attack(update_time, false /* replay */);
 				rigidbody_.setDamper(16f);
-				update_battle(dt, update_time);
+				update_maneuver(dt, update_time);
+				update_collision(update_time);
 				break;
 		}
 	}
@@ -142,11 +141,13 @@ public class Player
 	private void internal_update_for_replay(float dt, double update_time)
 	{
 		MyTransform transform = new MyTransform();
-		bool success = replay_manager_.getFrameData(update_time, ref transform);
+		bool success = replay_manager_.getFrameData(update_time, ref transform, ref fire_button_);
 		if (!success) {
 			SystemManager.Instance.restart();
 		}
 		rigidbody_.transform_ = transform;
+		update_attack(update_time, true /* replay */);
+		update_collision(update_time);
 	}
 
 	public void update(float dt, double update_time, float flow_speed)
@@ -194,15 +195,16 @@ public class Player
 		arm_offset_ = Mathf.Clamp(arm_offset_, 0f, 1f);
 	}
 
-	private void update_attack(double update_time)
+	private void update_attack(double update_time, bool replay)
 	{
-		bool fire_button = getButton(InputManager.Button.Fire) > 0;
-		bool fire_button_released = (!fire_button && prev_fire_button_);
-		prev_fire_button_ = fire_button;
+		if (!replay) {
+			fire_button_ = getButton(InputManager.Button.Fire) > 0;
+		}
+		bool fire_button_released = (!fire_button_ && prev_fire_button_);
+		prev_fire_button_ = fire_button_;
 
 		// fire bullets
-		did_fire_bullet_ = false;
-		if (fire_button) {
+		if (fire_button_) {
 			if (can_fire_time_ - update_time > 0f && update_time - fire_time_ > 0f) {
 				var lpos = rigidbody_.transform_.transformPosition(ref l_bullet_locator_);
 				Bullet.create(ref lpos, ref rigidbody_.transform_.rotation_, 120f /* speed */, update_time);
@@ -211,28 +213,25 @@ public class Player
 				SystemManager.Instance.registSound(DrawBuffer.SE.Bullet);
 				fire_time_ = update_time + 0.08f;
 				arm_offset_ = 1f;
-				did_fire_bullet_ = true;
 			}
 		} else {
 			can_fire_time_ = update_time + 2f;
 		}
 
 		// lockonrange display
-		LockonRange.Instance.setOn(fire_button);
-		now_locking_ = fire_button;
+		LockonRange.Instance.setOn(fire_button_);
+		now_locking_ = fire_button_;
 
 		// fire missiles
-		did_fire_missile_ = false;
 		if (fire_button_released) {
 			bool fired = LockTarget.fireMissiles(this);
 			if (fired) {
 				SystemManager.Instance.registSound(DrawBuffer.SE.Missile);
-				did_fire_missile_ = true;
 			}
 		}
 	}
 
-	private void update_battle(float dt, double update_time)
+	private void update_maneuver(float dt, double update_time)
 	{
 	    {
 			var move_vector = rigidbody_.transform_.rotation_ * CV.Vector3Forward;
@@ -245,7 +244,10 @@ public class Player
 			rigidbody_.solveForXYTube(Tube.RADIUS, dt);
 			rigidbody_.update(dt);
 		}
+	}
 
+	private void update_collision(double update_time)
+	{
 		// shield
 		{
 			Vector3 intersect_point = new Vector3(0f, 0f, 0f);

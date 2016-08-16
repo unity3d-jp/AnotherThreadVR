@@ -14,7 +14,7 @@ public class ReplayManagerTest : MonoBehaviour {
 			MyTransform tfm = new MyTransform();
 			tfm.position_ = new Vector3(i, 0f, 0f);
 			try {
-				replay_manager_.update((double)i, ref tfm, false /* fired_bullet */, false /* fired_missile */);
+				replay_manager_.update((double)i, ref tfm, false /* is_fire_button_pressed */);
 			} catch(System.Exception e) {
 				Debug.LogError(e);
 			}
@@ -27,7 +27,8 @@ public class ReplayManagerTest : MonoBehaviour {
 		for (var i = 0; i < 24; ++i) {
 			MyTransform tfm = new MyTransform();
 			try {
-				replay_manager_.getFrameData((double)(i-2) * 0.33333, ref tfm);
+				bool is_fire_button_pressed = false;
+				replay_manager_.getFrameData((double)(i-2) * 0.33333, ref tfm, ref is_fire_button_pressed);
 			} catch(System.Exception e) {
 				Debug.LogError(e);
 			}

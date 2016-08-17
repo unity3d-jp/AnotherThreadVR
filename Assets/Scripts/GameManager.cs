@@ -101,6 +101,7 @@ public class GameManager
 			yield return null;
 		}
 		notice.destroy();
+		MyRandom.setSeed(123456789u);
 
 		for (var w = new Utility.WaitForSeconds(1.5f, update_time_); !w.end(update_time_);) {yield return null; }
 		Player.Instance.setPhaseStart();

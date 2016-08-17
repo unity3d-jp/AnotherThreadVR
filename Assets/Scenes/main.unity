@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 1869512142}
-  m_IndirectSpecularColor: {r: 0.18182972, g: 0.22752722, b: 0.30770162, a: 1}
+  m_IndirectSpecularColor: {r: 0.18183105, g: 0.22753002, b: 0.30770615, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -678,7 +678,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 9641b41bb694a4232811f42e1943adc3, type: 3}
   - {fileID: 21300000, guid: 496ba639fd3fb6046be9b2d6c30b13a3, type: 3}
   - {fileID: 21300000, guid: f75e00cf28442d84b876447756e73cb6, type: 3}
-  - {fileID: 21300000, guid: b2c63808f0ad1b74b9573c9a5df19ce6, type: 3}
+  - {fileID: 21300000, guid: 6c62d6336e67a42a993f5efe0906d492, type: 3}
   vrsprite_material_: {fileID: 2100000, guid: 781d6bb027c7a443eb6a0b6144a01071, type: 2}
   sprite_material_: {fileID: 2100000, guid: 30405cde29ac44549b84aadf50daa0fd, type: 2}
   font_: {fileID: 12800000, guid: dee53e6e94d2046438dca36995a2b2ea, type: 2}

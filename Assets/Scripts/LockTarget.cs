@@ -168,9 +168,9 @@ public class LockTarget
 
 	public void update()
 	{
-		calc_position_func_(ref updated_position_);
-		// updated_position_ = owner_task_.rigidbody_.transform_.transformPosition(ref position_);
-		if (!owner_task_.alive_) {
+		if (owner_task_.alive_) {
+			calc_position_func_(ref updated_position_);
+		} else {
 			destroy();
 		}
 	}

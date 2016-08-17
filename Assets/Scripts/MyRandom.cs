@@ -39,6 +39,11 @@ public class MyRandom
 
 	static Xorshift rand_ = new Xorshift();
 	
+	public static void setSeed(UInt64 seed)
+	{
+		rand_.setSeed(seed);
+	}
+
 	public static UInt32 get()
 	{
 		return rand_.getNext();

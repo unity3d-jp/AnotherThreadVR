@@ -127,6 +127,9 @@ public class ReplayManager
 		}
 	}
 
+	/**
+	 * @return whether next frame is available. 'false' means you should stop the replay at this frame.
+	 */
 	public bool getFrameData(double update_time, ref MyTransform transform, ref bool is_fire_button_pressed)
 	{
 		double game_time = update_time - start_time_;

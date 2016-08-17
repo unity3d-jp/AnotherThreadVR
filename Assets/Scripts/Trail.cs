@@ -214,7 +214,7 @@ public class Trail
 			int j = 0;
 			for (var i = 0; i < NODE_NUM; ++i) {
 				if (i > 0) {
-					const float STANDARD_FPS = 0.0166f;
+					const float STANDARD_FPS = 0.008333f;
 					for (;j < UPDATE_POSITION_NUM && time < STANDARD_FPS; ++j) {
 						time += (time_prev - update_time_[idx+j]);
 						time_prev = update_time_[idx+j];

@@ -154,10 +154,8 @@ public class ReplayManager
 
 		bool is_fire_button_pressed_a = frames_[index_a].is_fire_button_pressed_;
 		bool is_fire_button_pressed_b = frames_[index_b].is_fire_button_pressed_;
-		is_fire_button_pressed = (is_fire_button_pressed_a ||
-								  is_fire_button_pressed_b);
-		// Debug.LogFormat("play:{0},{1}", game_time, transform.position_);
-		return (index +1 < max);
+		is_fire_button_pressed = ratio < 0.5f ? is_fire_button_pressed_a : is_fire_button_pressed_b;
+		return (index+1 < max);
 	}
 }
 

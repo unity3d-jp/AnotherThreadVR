@@ -18,12 +18,18 @@ public class GameManager
 	private IEnumerator enumerator_;
 	private double update_time_;
 	private ReplayManager replay_manager_;
+	private bool replay_mode_ = false;
 
 	public void init()
 	{
 		enumerator_ = act();	// この瞬間は実行されない
 		replay_manager_ = new ReplayManager();
 		replay_manager_.init();
+	}
+
+	public void setReplayMode(bool flg)
+	{
+		replay_mode_ = flg;
 	}
 
 	public void update(float dt, double update_time)
@@ -51,7 +57,7 @@ public class GameManager
 		SystemManager.Instance.setFlowSpeed(0f);
 		SystemManager.Instance.setSubjective(true);
 
-		for (var w = new Utility.WaitForSeconds(5f, update_time_); !w.end(update_time_);) {yield return null; }
+		for (var w = new Utility.WaitForSeconds(4f, update_time_); !w.end(update_time_);) {yield return null; }
 		Notice notice;
 		{
 			notice = Notice.create(-400f, 400f,
@@ -59,18 +65,38 @@ public class GameManager
 								   MySprite.Type.Full,
 								   false /* blink */);
 		}
+		var leave_time_start = update_time_;
 		while (game_phase_ == GamePhase.Title) {
+			bool exit_title = false;
+			var elapsed_time = update_time_ - leave_time_start;
 			if (InputManager.Instance.getButton(InputManager.Button.Fire) > 0) {
-				game_phase_ = GamePhase.Game;
-				SystemManager.Instance.registSound(DrawBuffer.SE.Missile);
-				SystemManager.Instance.registMotion(DrawBuffer.Motion.GoodLuck);
+				exit_title = true;
 				replay_manager_.startRecording(update_time_);
-			} else if (replay_manager_.hasRecorded()) {
+				replay_mode_ = false;
+			} else {
+				if (replay_manager_.hasRecorded()) {
+					bool start_replay = false;
+					if (replay_mode_) {
+						if (elapsed_time > 1f) {
+							start_replay = true;
+						}
+					} else {
+						if (elapsed_time > 30f) {
+							start_replay = true;
+							replay_mode_ = true;
+						}
+					}
+					if (start_replay) {
+						exit_title = true;
+						SystemManager.Instance.setSubjective(false);
+						replay_manager_.startPlaying(update_time_, Player.Instance);
+					}
+				}
+			}
+			if (exit_title) {
 				game_phase_ = GamePhase.Game;
 				SystemManager.Instance.registSound(DrawBuffer.SE.Missile);
 				SystemManager.Instance.registMotion(DrawBuffer.Motion.GoodLuck);
-				SystemManager.Instance.setSubjective(false);
-				replay_manager_.startPlaying(update_time_, Player.Instance);
 			}
 			yield return null;
 		}

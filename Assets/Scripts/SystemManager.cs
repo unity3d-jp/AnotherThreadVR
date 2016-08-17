@@ -562,6 +562,7 @@ public class SystemManager : MonoBehaviour {
 					long elapsed_tick = stopwatch_.ElapsedTicks - pause_back_time_;
 					float elapsed = (float)elapsed_tick/((float)System.Diagnostics.Stopwatch.Frequency);
 					if (elapsed > 1f) {
+						GameManager.Instance.setReplayMode(false);
 						restart();
 						pause_ = false;
 					}

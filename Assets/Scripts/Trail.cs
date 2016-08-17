@@ -20,7 +20,7 @@ public class Trail
 	}
 
 	const int TRAIL_MAX = 32;
-	public const int NODE_NUM = 16;
+	public const int NODE_NUM = 32;
 	const int MAX_PRECISION_LEVEL = 16;
 	const int UPDATE_POSITION_NUM = NODE_NUM * MAX_PRECISION_LEVEL;
 
@@ -227,14 +227,19 @@ public class Trail
 				++j;
 			}
 		}
+		var prev_diff = new Vector3();
 		for (var i = 0; i < NODE_NUM; ++i) {
 			var i0 = work_index_list_[i];
 			vertices_[front][(id*NODE_NUM+i)*2+0] = positions_[id*UPDATE_POSITION_NUM+i0];
 			vertices_[front][(id*NODE_NUM+i)*2+1] = positions_[id*UPDATE_POSITION_NUM+i0];
 			var i1 = work_index_list_[Mathf.Clamp(i+1, 0, NODE_NUM-1)];
 			var diff = positions_[id*NODE_NUM+i0] - positions_[id*UPDATE_POSITION_NUM+i1];
+			if (i0 == i1) {
+				diff = prev_diff;
+			}
 			normals_[front][(id*NODE_NUM+i)*2+0] = diff;
 			normals_[front][(id*NODE_NUM+i)*2+1] = diff;
+			prev_diff = diff;
 		}
 		for (var i = 0; i < NODE_NUM; ++i) {
 			uv2s_[front][(id*NODE_NUM+i)*2+0] = new Vector2(widths_[id], (float)types_[id]);

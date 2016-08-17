@@ -92,7 +92,7 @@ public class Missile : Task
 						rigidbody_.setAcceleration(ref accel);
 					}
 					arrival_time_ -= dt;
-					if (arrival_time_ < 0f) {
+					if (arrival_time_ <= 0f) {
 						lock_target_.hit();
 						destroy_start_ = update_time;
 					}

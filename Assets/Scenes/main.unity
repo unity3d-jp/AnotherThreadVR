@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 1869512142}
-  m_IndirectSpecularColor: {r: 0.18183105, g: 0.22753002, b: 0.30770615, a: 1}
+  m_IndirectSpecularColor: {r: 0.18182972, g: 0.22752722, b: 0.30770162, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -167,7 +167,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 12
 --- !u!1 &155517644
 GameObject:
   m_ObjectHideFlags: 0
@@ -597,7 +597,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 10
 --- !u!1 &609572932
 GameObject:
   m_ObjectHideFlags: 0
@@ -627,7 +627,7 @@ Transform:
   - {fileID: 1969183719}
   - {fileID: 1869512143}
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 11
 --- !u!1 &1130407838
 GameObject:
   m_ObjectHideFlags: 0
@@ -669,6 +669,7 @@ MonoBehaviour:
   trail_material_: {fileID: 2100000, guid: ae2cd965095c646efa73c67b49fdd3a6, type: 2}
   explosion_material_: {fileID: 2100000, guid: fcf177587c852485bb62a95e6636d9fd, type: 2}
   hahen_material_: {fileID: 2100000, guid: 3e6119050e05a4ebfb225fd07d6b2402, type: 2}
+  shockwave_material_: {fileID: 2100000, guid: aa82b4fecac814f1c8ff0e7f5acf0dad, type: 2}
   lockon_range_material_: {fileID: 2100000, guid: bcb8c47f04b074316bd1abddbac5afc1,
     type: 2}
   sight_material_: {fileID: 2100000, guid: da1957643c2ed4c2794d44a2db47fdcc, type: 2}
@@ -715,7 +716,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
 --- !u!1 &1199524174
 GameObject:
   m_ObjectHideFlags: 0
@@ -920,7 +921,85 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
+--- !u!1 &1506869398
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1506869402}
+  - 33: {fileID: 1506869401}
+  - 23: {fileID: 1506869400}
+  - 114: {fileID: 1506869399}
+  m_Layer: 0
+  m_Name: shockwaveRenderer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1506869399
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1506869398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c8458c94885749a79f6eee7985a4416, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!23 &1506869400
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1506869398}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_Materials:
+  - {fileID: 0}
+  m_SubsetIndices: 
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_SelectedWireframeHidden: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+--- !u!33 &1506869401
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1506869398}
+  m_Mesh: {fileID: 0}
+--- !u!4 &1506869402
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1506869398}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
 --- !u!1 &1568534218
 GameObject:
   m_ObjectHideFlags: 0
@@ -1404,7 +1483,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 13
 --- !u!1 &2125085390
 GameObject:
   m_ObjectHideFlags: 0

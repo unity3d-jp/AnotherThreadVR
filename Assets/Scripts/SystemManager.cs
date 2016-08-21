@@ -67,6 +67,7 @@ public class SystemManager : MonoBehaviour {
 	public Material trail_material_;
 	public Material explosion_material_;
 	public Material hahen_material_;
+	public Material shockwave_material_;
 	public Material lockon_range_material_;
 	public Material sight_material_;
 	public Material shield_material_;
@@ -209,6 +210,7 @@ public class SystemManager : MonoBehaviour {
 		Trail.Instance.init(trail_material_);
 		Explosion.Instance.init(explosion_material_);
 		Hahen.Instance.init(hahen_material_);
+		Shockwave.Instance.init(shockwave_material_);
 		// HUD.Instance.init();
 		LockonRange.Instance.init(lockon_range_material_);
 		LockonRangeRenderer.Instance.init(camera_);
@@ -586,6 +588,7 @@ public class SystemManager : MonoBehaviour {
 		Spark.Instance.begin();
 		Explosion.Instance.begin();
 		Hahen.Instance.begin();
+		Shockwave.Instance.begin();
 		Shield.Instance.begin();
 
 		// renderUpdate
@@ -599,6 +602,7 @@ public class SystemManager : MonoBehaviour {
 
 		// end
 		Shield.Instance.end(updating_front);
+		Shockwave.Instance.end(updating_front);
 		Hahen.Instance.end(updating_front);
 		Explosion.Instance.end(updating_front);
 		Spark.Instance.end(updating_front);
@@ -931,6 +935,7 @@ public class SystemManager : MonoBehaviour {
 			Explosion.Instance.render(rendering_front_, camera_, render_time, flow_speed_ * 0.25f);
 		}
 		Hahen.Instance.render(rendering_front_, render_time);
+		Shockwave.Instance.render(rendering_front_, camera_, render_time);
 		Shield.Instance.render(rendering_front_, render_time);
 		Sight.Instance.render(rendering_front_, camera_, render_time);
 		LockonRange.Instance.render(dt_);

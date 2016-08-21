@@ -1,6 +1,6 @@
 ﻿Shader "Custom/shockwave" {
 	SubShader {
-   		Tags { "Queue"="Transparent" "IgnoreProjector"="True" "RenderType"="Transparent" }
+   		Tags { "Queue"="Transparent+10" "IgnoreProjector"="True" "RenderType"="Transparent" }
 		ZWrite Off
 		Cull Off
 		// Blend SrcAlpha OneMinusSrcAlpha // alpha blending
@@ -34,9 +34,9 @@
    
             v2f vert(appdata_custom v)
             {
-				float distortion_level = 0.1;
-				float elapsed = (_CurrentTime - v.texcoord.x) + 0.02;
-				float radius = elapsed * 8;
+				float distortion_level = 1;
+				float elapsed = (_CurrentTime - v.texcoord.x) + 0.2;
+				float radius = elapsed * 32;
 				float theta = v.texcoord.y;
 
 				float s = sin(theta);

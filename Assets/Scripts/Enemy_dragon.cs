@@ -59,6 +59,7 @@ class DragonNode {
 			lock_target_.clearLock();
 			Explosion.Instance.spawn(ref lock_target_.updated_position_, update_time);
 			Hahen.Instance.spawn(ref lock_target_.updated_position_, update_time);
+			Shockwave.Instance.spawn(ref lock_target_.updated_position_, update_time);
 			SystemManager.Instance.registSound(DrawBuffer.SE.Explosion);
 		}
 		rigidbody_.addSpringTorque(ref parent_transform.rotation_, 30f /* torque_level */);
@@ -366,6 +367,7 @@ public partial class Enemy : Task
 		if (life_ <= 0f && phase_ == Phase.Alive) {
 			Explosion.Instance.spawn(ref lock_target_.updated_position_, update_time_);
 			Hahen.Instance.spawn(ref lock_target_.updated_position_, update_time_);
+			Shockwave.Instance.spawn(ref lock_target_.updated_position_, update_time_);
 			SystemManager.Instance.registSound(DrawBuffer.SE.Explosion);
 			MyCollider.disableForEnemy(collider_);
 			lock_target_.disable();

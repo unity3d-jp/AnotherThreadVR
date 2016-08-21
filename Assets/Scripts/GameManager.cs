@@ -178,7 +178,7 @@ public class GameManager
 		}
 
 		dragon.setMode(Dragon.Mode.LastAttack);
-		for (var w = new Utility.WaitForSeconds(13f, update_time_); !w.end(update_time_);) { yield return null; }
+		for (var w = new Utility.WaitForSeconds(11f, update_time_); !w.end(update_time_);) { yield return null; }
 		Notice.create(0f, 0f,
 					  update_time_ + 6f,
 					  MySprite.Kind.Logo,

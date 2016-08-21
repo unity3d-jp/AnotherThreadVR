@@ -9,7 +9,7 @@ public class ReplayManager
 	const int MAX_FRAMES = 120*60*10; // 10 minutes for 120fps
 	struct RecordedFrame
 	{
-		public double game_time_;
+		public float game_time_;
 		public MyTransform player_transform_;
 		public bool is_fire_button_pressed_;
 	}
@@ -80,13 +80,10 @@ public class ReplayManager
 					   ref MyTransform player_transform,
 					   bool is_fire_button_pressed)
 	{
-		if (is_recording_) {
-			if (frame_index_ > 0 &&
-				frames_[frame_index_-1].game_time_ == update_time) { // time seems to stop.
-				return;
-			}
+		/* during pause, this function won't be executed. */
 
-			frames_[frame_index_].game_time_ = update_time - start_time_;
+		if (is_recording_) {
+			frames_[frame_index_].game_time_ = (float)(update_time - start_time_);
 			frames_[frame_index_].player_transform_.position_ = player_transform.position_;
 			frames_[frame_index_].player_transform_.rotation_ = player_transform.rotation_;
 			frames_[frame_index_].is_fire_button_pressed_ = is_fire_button_pressed;

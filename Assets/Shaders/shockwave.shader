@@ -34,8 +34,14 @@
    
             v2f vert(appdata_custom v)
             {
-				float distortion_level = 1;
-				float elapsed = (_CurrentTime - v.texcoord.x) + 0.2;
+				#if UNITY_UV_STARTS_AT_TOP
+				float scale = -1;
+				#else
+				float scale = 1;
+				#endif		
+
+				float distortion_level = 0.1;
+				float elapsed = (_CurrentTime - v.texcoord.x) + 0.02;
 				float radius = elapsed * 32;
 				float theta = v.texcoord.y;
 
@@ -49,14 +55,15 @@
 
             	v2f o;
             	o.pos = mul(UNITY_MATRIX_MVP, float4(vec2, 1));
-				o.uvgrab.xy = (float2(o.pos.x+c*distortion_level, o.pos.y+s*distortion_level) + o.pos.w) * 0.5;
+				o.uvgrab.xy = (((float2(o.pos.x, o.pos.y*scale) + o.pos.w) * 0.5) +
+							   float2(c, s)*distortion_level);
 				o.uvgrab.zw = o.pos.zw;
             	return o;
             }
 
             fixed4 frag(v2f i) : SV_Target
             {
-				fixed4 col = tex2Dproj(_GrabTexture, UNITY_PROJ_COORD(i.uvgrab));
+				fixed4 col = tex2Dproj(_GrabTexture, UNITY_PROJ_COORD(i.uvgrab))*2;
 				return col;
             }
 

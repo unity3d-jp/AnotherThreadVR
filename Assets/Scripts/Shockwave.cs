@@ -11,7 +11,7 @@ public class Shockwave
 
 	const int SHOCKWAVE_MAX = 32;
 	const int VERTEX_NUM = 32;
-	const float DIFFERENCE_TIME_FOR_WIDTH = 0.2f;
+	const float DIFFERENCE_TIME_FOR_WIDTH = 0.02f;
 
 	private Vector3[] positions_;
 	private float[] time_list_;

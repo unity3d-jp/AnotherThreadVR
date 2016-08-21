@@ -17,7 +17,7 @@ public class Shockwave
 	private float[] time_list_;
 
 	private Vector3[][] vertices_;
-	private Vector2[][] uvs_;
+	private Vector3[][] normals_;
 
 	private int spawn_index_;
 	private Mesh mesh_;
@@ -37,7 +37,7 @@ public class Shockwave
 		time_list_ = new float[SHOCKWAVE_MAX];
 
 		vertices_ = new Vector3[2][] { new Vector3[SHOCKWAVE_MAX*VERTEX_NUM*2], new Vector3[SHOCKWAVE_MAX*VERTEX_NUM*2], };
-		uvs_ = new Vector2[2][] { new Vector2[SHOCKWAVE_MAX*VERTEX_NUM*2], new Vector2[SHOCKWAVE_MAX*VERTEX_NUM*2], };
+		normals_ = new Vector3[2][] { new Vector3[SHOCKWAVE_MAX*VERTEX_NUM*2], new Vector3[SHOCKWAVE_MAX*VERTEX_NUM*2], };
 
 		var triangles = new int[SHOCKWAVE_MAX*VERTEX_NUM*6];
 		for (var i = 0; i < SHOCKWAVE_MAX; ++i) {
@@ -52,7 +52,6 @@ public class Shockwave
 				triangles[idx*6+3] = idx1+0;
 				triangles[idx*6+4] = idx0+1;
 				triangles[idx*6+5] = idx1+1;
-				// Debug.LogFormat("idx:{0}, idx0:{1}, idx1:{2}", idx, idx0, idx1);
 			}
 		}
 
@@ -60,7 +59,7 @@ public class Shockwave
 		mesh_.MarkDynamic();
 		mesh_.name = "shockwave";
 		mesh_.vertices = vertices_[0];
-		mesh_.uv = uvs_[0];
+		mesh_.normals = normals_[0];
 		mesh_.triangles = triangles;
 		mesh_.bounds = new Bounds(Vector3.zero, Vector3.one * 99999999);
 		material_ = material;
@@ -82,11 +81,12 @@ public class Shockwave
 				int idx0 = (idx+j)*2;
 				vertices_[front][idx0+0] = positions_[i];
 				vertices_[front][idx0+1] = positions_[i];
-				uvs_[front][idx0+0].x = time_list_[i];
-				uvs_[front][idx0+0].y = theta;
-				uvs_[front][idx0+1].x = time_list_[i] + DIFFERENCE_TIME_FOR_WIDTH;
-				uvs_[front][idx0+1].y = theta;
-				// Debug.LogFormat("idx0:{0}", idx0);
+				normals_[front][idx0+0].x = time_list_[i];
+				normals_[front][idx0+0].y = theta;
+				normals_[front][idx0+0].z = 1f; // distortion level
+				normals_[front][idx0+1].x = time_list_[i] + DIFFERENCE_TIME_FOR_WIDTH;
+				normals_[front][idx0+1].y = theta;
+				normals_[front][idx0+1].z = 0f; // distortion level
 			}
 		}
 	}
@@ -94,7 +94,7 @@ public class Shockwave
 	public void render(int front, Camera camera, double render_time)
 	{
 		mesh_.vertices = vertices_[front];
-		mesh_.uv = uvs_[front];
+		mesh_.normals = normals_[front];
 		material_.SetVector(material_CamUp, camera.transform.up);
 		material_.SetFloat(material_CurrentTime, (float)render_time);
 	}

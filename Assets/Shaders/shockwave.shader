@@ -18,13 +18,14 @@
  			#include "UnityCG.cginc"
  			struct appdata_custom {
 				float4 vertex : POSITION;
-				float4 texcoord : TEXCOORD0;
+				float4 normal : NORMAL;
 			};
 
  			struct v2f
  			{
  				float4 pos:SV_POSITION;
 				float4 uvgrab : TEXCOORD0;
+				float2 uv2:TEXCOORD1;
  			};
  			
 			float _CurrentTime;
@@ -40,10 +41,11 @@
 				float scale = 1;
 				#endif		
 
-				float distortion_level = 0.1;
-				float elapsed = (_CurrentTime - v.texcoord.x) + 0.02;
+				float elapsed = (_CurrentTime - v.normal.x) + 0.02;
 				float radius = elapsed * 32;
-				float theta = v.texcoord.y;
+				float theta = v.normal.y;
+				float distortion_level = v.normal.z*0.5;
+				float luminance_level = 1 + v.normal.z;
 
 				float s = sin(theta);
 				float c = cos(theta);
@@ -58,12 +60,14 @@
 				o.uvgrab.xy = (((float2(o.pos.x, o.pos.y*scale) + o.pos.w) * 0.5) +
 							   float2(c, s)*distortion_level);
 				o.uvgrab.zw = o.pos.zw;
+				o.uv2.x = luminance_level;
+				o.uv2.y = 0;
             	return o;
             }
 
             fixed4 frag(v2f i) : SV_Target
             {
-				fixed4 col = tex2Dproj(_GrabTexture, UNITY_PROJ_COORD(i.uvgrab))*2;
+				fixed4 col = tex2Dproj(_GrabTexture, UNITY_PROJ_COORD(i.uvgrab))*i.uv2.x;
 				return col;
             }
 

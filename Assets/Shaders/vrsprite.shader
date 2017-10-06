@@ -1,4 +1,6 @@
-﻿Shader "Custom/vrsprite" {
+﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+Shader "Custom/vrsprite" {
     Properties {
 		_MainTex ("Base (RGB)", 2D) = "white" {}
     }
@@ -51,7 +53,7 @@
 				tv.xyz += vec;
 
             	v2f o;
-			    o.pos = mul(UNITY_MATRIX_MVP, float4(tv.xyz, 1));
+			    o.pos = UnityObjectToClipPos(float4(tv.xyz, 1));
 				o.texcoord = v.texcoord.xy;
 				int color_index = (int)v.normal.z;
 				o.color = _Colors[color_index];

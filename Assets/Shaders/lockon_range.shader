@@ -1,4 +1,6 @@
-﻿
+﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+
 Shader "Custom/lockon_range" {
 	SubShader {
    		Tags { "Queue"="Transparent" "IgnoreProjector"="True" "RenderType"="Transparent" }
@@ -31,7 +33,7 @@ Shader "Custom/lockon_range" {
             v2f vert(appdata_custom v)
             {
             	v2f o;
-            	o.pos = mul(UNITY_MATRIX_MVP, v.vertex);
+            	o.pos = UnityObjectToClipPos(v.vertex);
             	o.color = v.color;
 				o.color.a *= _Transparency;
             	return o;

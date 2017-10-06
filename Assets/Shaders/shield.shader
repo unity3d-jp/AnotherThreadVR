@@ -1,4 +1,6 @@
-﻿Shader "Custom/shield" {
+﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+Shader "Custom/shield" {
     Properties {
 		_MainTex ("Base (RGB)", 2D) = "white" {}
     }
@@ -48,7 +50,7 @@
 				float3 vec = ((v.texcoord.x-0.5f)*tangent + (v.texcoord.y-0.5f)*binormal) *size + v.vertex.xyz;
 
             	v2f o;
-				o.pos = mul(UNITY_MATRIX_MVP, float4(vec.xyz,1));
+				o.pos = UnityObjectToClipPos(float4(vec.xyz,1));
 				int color_index = (int)v.texcoord2.y;
 				o.color = _Colors[color_index];
 				o.color.a = clamp(1-elapsed*4, 0, 1);

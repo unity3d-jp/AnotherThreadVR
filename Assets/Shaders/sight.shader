@@ -1,4 +1,6 @@
-﻿
+﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+
 Shader "Custom/sight" {
     Properties {
     }
@@ -81,7 +83,7 @@ Shader "Custom/sight" {
 				float3 tv = rvec + v0;
 
             	v2f o;
-			    o.pos = mul(UNITY_MATRIX_MVP, float4(tv, 1));
+			    o.pos = UnityObjectToClipPos(float4(tv, 1));
 				o.color = v.color;
             	return o;
             }

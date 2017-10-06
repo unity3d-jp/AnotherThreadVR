@@ -1,4 +1,6 @@
-﻿Shader "Custom/shockwave" {
+﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+Shader "Custom/shockwave" {
 	SubShader {
    		Tags { "Queue"="Transparent+10" "IgnoreProjector"="True" "RenderType"="Transparent" }
 		ZWrite Off
@@ -56,7 +58,7 @@
 				float3 vec2 = (tv.x*side + tv.y*up) + v.vertex.xyz;
 
             	v2f o;
-            	o.pos = mul(UNITY_MATRIX_MVP, float4(vec2, 1));
+            	o.pos = UnityObjectToClipPos(float4(vec2, 1));
 				o.uvgrab.xy = (((float2(o.pos.x, o.pos.y*scale) + o.pos.w) * 0.5) +
 							   float2(c, s)*distortion_level);
 				o.uvgrab.zw = o.pos.zw;

@@ -950,9 +950,9 @@ public class SystemManager : MonoBehaviour {
 		PerformanceFetcher.PopMarker();
 
 		// memory investigation
-		used_heap_size_ = (long)Profiler.usedHeapSize;
-		mono_heap_size_ = (long)Profiler.GetMonoHeapSize();
-		mono_used_size_ = (long)Profiler.GetMonoUsedSize();
+		used_heap_size_ = (long)UnityEngine.Profiling.Profiler.usedHeapSize;
+		mono_heap_size_ = (long)UnityEngine.Profiling.Profiler.GetMonoHeapSize();
+		mono_used_size_ = (long)UnityEngine.Profiling.Profiler.GetMonoUsedSize();
 
 		// frame
 		elapsed_frame_time_ = Time.time - prev_frame_time_;
